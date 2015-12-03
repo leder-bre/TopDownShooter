@@ -136,10 +136,18 @@ class Player {
 
       for (int i = 0; i < walls.length; i++) {
         if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
-          location.y-=velocity.y * 1.1;
+          if (controller == false) {
+            location.y-=velocity.y * 1.1;
+          } else {
+            location.y-=velocity.y * 2;
+          }
         }
         if (location.x+velocity.x > walls[i].x - walls[i].wide/2 && location.x+velocity.x < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-          location.x-=velocity.x * 1.1;
+          if (controller == false) {
+            location.x-=velocity.x * 1.1;
+          } else {
+            location.x-=velocity.x * 2;
+          }
         }
       }
 
@@ -183,11 +191,17 @@ class Player {
 
     translate(location.x, location.y);
 
-    rotate(atan2(mouseY-height/2, mouseX-width/2));
     if (health > 0) {
-
+      if (controller == false) {
+        rotate(atan2(mouseY-height/2, mouseX-width/2));
+      } else {
+        //if (X2 != 0 && Y2 != 0) {
+          rotate(atan2(height/2 + Y2 - height/2, width/2 + X2 - width/2));
+        //} else {
+        //  rotate(atan2(height/2 + Y1 - height/2, width/2 + X1 - width/2));
+        //}
+      }
       fill(210, 200, 150);
-
       ellipse(legs, 10, 15, 12);
       ellipse(-1*legs, -10, 15, 12);
 
@@ -401,38 +415,79 @@ class Player {
   void shoot() {
     if (health > 0) {
 
-      if (mousePressed) {
-        if (w.weapon == 3 && w.knife == 200) {
-          if (punch == false && w.shot == false) {
-            punch = true;
-            knife.play();
-            w.shot = true;
-            w.knife = 0;
+      if (controller == false) {
+        if (mousePressed) {
+          if (w.weapon == 3 && w.knife == 200) {
+            if (punch == false && w.shot == false) {
+              punch = true;
+              knife.play();
+              w.shot = true;
+              w.knife = 0;
+            }
+          }
+          if (w.weapon != 3) {
+            if (w.canShoot <= 0 && w.shot == false) {
+              if (w.weapon == 1 && w.pammo > 0 || w.weapon == 2 && w.mammo > 0) {
+                bang = 255;
+                w.canShoot = w.fireRate;
+                w.shot=true;
+                gunshot.play();
+                maxBullets += 1;
+                w.recoil += 20;
+                if (w.weapon == 1) {
+                  w.recoil += 20;
+                  w.pammo -= 1;
+                } else {
+                  w.mammo -= 1;
+                }
+              } else {
+                fill(20, 0, 0);
+                textSize(50);
+                textFont(zFont, 50);
+                if (w.weapon == 1 && w.totpammo > 0 || w.weapon == 2 && w.totmammo > 0) {
+                  text("Reload", p.location.x, p.location.y - 50);
+                } else {
+                  text("Out of Ammo", p.location.x, p.location.y - 50);
+                }
+              }
+            }
           }
         }
-        if (w.weapon != 3) {
-          if (w.canShoot <= 0 && w.shot == false) {
-            if (w.weapon == 1 && w.pammo > 0 || w.weapon == 2 && w.mammo > 0) {
-              bang = 255;
-              w.canShoot = w.fireRate;
-              w.shot=true;
-              gunshot.play();
-              maxBullets += 1;
-              w.recoil += 20;
-              if (w.weapon == 1) {
+      } else {
+
+        if (R31 == 0) {
+          if (w.weapon == 3 && w.knife == 200) {
+            if (punch == false && w.shot == false) {
+              punch = true;
+              knife.play();
+              w.shot = true;
+              w.knife = 0;
+            }
+          }
+          if (w.weapon != 3) {
+            if (w.canShoot <= 0 && w.shot == false) {
+              if (w.weapon == 1 && w.pammo > 0 || w.weapon == 2 && w.mammo > 0) {
+                bang = 255;
+                w.canShoot = w.fireRate;
+                w.shot=true;
+                gunshot.play();
+                maxBullets += 1;
                 w.recoil += 20;
-                w.pammo -= 1;
+                if (w.weapon == 1) {
+                  w.recoil += 20;
+                  w.pammo -= 1;
+                } else {
+                  w.mammo -= 1;
+                }
               } else {
-                w.mammo -= 1;
-              }
-            } else {
-              fill(20, 0, 0);
-              textSize(50);
-              textFont(zFont, 50);
-              if (w.weapon == 1 && w.totpammo > 0 || w.weapon == 2 && w.totmammo > 0) {
-                text("Reload", p.location.x, p.location.y - 50);
-              } else {
-                text("Out of Ammo", p.location.x, p.location.y - 50);
+                fill(20, 0, 0);
+                textSize(50);
+                textFont(zFont, 50);
+                if (w.weapon == 1 && w.totpammo > 0 || w.weapon == 2 && w.totmammo > 0) {
+                  text("Reload", p.location.x, p.location.y - 50);
+                } else {
+                  text("Out of Ammo", p.location.x, p.location.y - 50);
+                }
               }
             }
           }
@@ -444,17 +499,17 @@ class Player {
       if (dead > 100) {
         fill(255);
         pushMatrix();
-        rect(p.location.x, p.location.y+40, 100, 10, 3);   
-        rect(p.location.x, p.location.y+80, 100, 10, 3); 
+        rect(p.location.x, p.location.y+40, 100, 30, 3);   
+        rect(p.location.x, p.location.y+80, 100, 30, 3); 
         fill(0);
         text("Restart", p.location.x, p.location.y + 40);
         text("Quit", p.location.x, p.location.y + 80);
-        if (mouseX>width/2-50&&mouseX<width/2+50&&mouseY>height/2+40-5&&mouseY<height/2+40+5) {
-          if (mousePressed) {
+        if (mousePressed) {
+          if (mouseX>width/2-50&&mouseX<width/2+50&&mouseY>height/2+40-15&&mouseY<height/2+40+15) {
             g.gsetup();
             setup();
-          } else if (mouseX>width/2-50&&mouseX<width/2+50&&mouseY>height/2+80-5&&mouseY<height/2+80+5) {
-            stop();
+          } else if (mouseX>width/2-50&&mouseX<width/2+50&&mouseY>height/2+80-15&&mouseY<height/2+80+15) {
+            exit();
           }
         }
         popMatrix();

@@ -8,11 +8,23 @@
 //weapons against increasingly powerful waves
 //of variably powerful zombies
 
+/*
+Ideas:
+3D
+Hair
+Controller
+*/
+
 import processing.sound.*;
+boolean controller = true;
+import processing.serial.*;
+Serial myPort;
 Game g;
 Player p;
 Bullet bullets[] = new Bullet[1000000];
-Wall walls[] = new Wall[80];
+int xBoundary = 100;
+int yBoundary = 100;
+Wall walls[] = new Wall[80 + int((xBoundary+yBoundary)/2)];
 Weapons w;
 Pickup pick;
 Zombie z[] = new Zombie[100];
@@ -28,10 +40,24 @@ float h;
 boolean run;
 int title;
 PFont zFont;
+float X1;
+float Y1;
+int R31; //left
+float X2;
+float Y2;
+int R32;
+boolean ran = false;
 
 void setup() {
+  if(controller == true) {
+  String portName = Serial.list()[2];
+  if(ran == false) {
+  myPort = new Serial(this, portName, 9600);
+  }
+  myPort.bufferUntil('\n');
+  }
   smooth();
-  size(1280, 800);
+  size(1280, 750);
   zFont = createFont("Courier Bold", 10);
   run = false;
   wi = width;
@@ -54,6 +80,25 @@ void setup() {
 }
 
 void draw() {
+  
+  /*
+  myPort.write(1);
+  
+  if(myPort.available() > 0) {
+  String positions = (myPort.readStringUntil('\n'));
+  String[] numb = (split(positions, ' '));
+  X1  = map(float(numb[0]), 511, 0, 0, 100);
+  Y1  = map(float(numb[1]), 505, 0, 0, 100);
+  R31 = int(numb[2]);
+  X2  = map(float(numb[3]), 520, 0, 0, 100);
+  Y2  = map(float(numb[4]), 515, 0, 0, 100);
+  R32 = int(numb[5]);
+  }
+  */
+  //println("X: " + X1 + " Y: " + Y1);
+  
+  println("xR31: " + R31 + " R32: " + R32);
+  
   stroke(0);
   if (run == false) {
     background(0);
@@ -247,4 +292,26 @@ void mouseReleased() {
   if (run == true) {
     g.gmouseReleased();
   }
+}
+
+void serialEvent (Serial myPort) {
+  
+  String positions = (myPort.readStringUntil('\n'));
+  String[] numb = (split(positions, ' '));
+  X2  = map(float(numb[0]), 511, 0, 0, 100);
+  Y2  = map(float(numb[1]), 505, 0, 0, 100);
+  if(Y2==-0.1980198) {
+   Y2 = 0; 
+  }
+  R31 = int(numb[2]);
+  X1  = map(float(numb[3]), 520, 0, 0, 100);
+  if(X1 == -0.1923077) {
+   X1 = 0; 
+  }
+  Y1  = map(float(numb[4]), 515, 0, 0, 100);
+  if(Y1 == -0.19417477) {
+   Y1 = 0; 
+  }
+  R32 = int(numb[5]);
+ 
 }

@@ -14,6 +14,10 @@ class Wall {
   }
 
   void display() {
+    fill(50, 40, 30);
+    stroke(0);
+    rect(x, y, wide, high);
+    /*
     if (frameCount % 2 == 0) {
       if (p.health > 0) {
         move.x = x - p.location.x;
@@ -74,13 +78,16 @@ class Wall {
     line(x+3*wide/8+move.x, y-3*high/8+move.y, x+wide/2, y-high/2);
     line(x-3*wide/8+move.x, y-3*high/8+move.y, x-wide/2, y-high/2);
     line(x-3*wide/8+move.x, y+3*high/8+move.y, x-wide/2, y+high/2);
+    */
   }
 
   void displayTop() {
+    /*
     fill(50, 40, 30); 
     stroke(0);
     strokeWeight(2);
     rect(x+move.x, y+move.y, 3*wide/4, 3*high/4);
     strokeWeight(1);
+    */
   }
 }

@@ -14,9 +14,21 @@ class Bullet {
 
   void call() {
     if (spawn == 0) {
-
-      velocity.x = mouseX - width/2;
-      velocity.y = mouseY - height/2;
+      if (controller == false) {
+        velocity.x = mouseX - width/2;
+        velocity.y = mouseY - height/2;
+      } else {
+        if(X2 != 0) {
+         velocity.x = X2;
+        } else {
+         velocity.x = X1; 
+        }
+        if(Y2 != 0) {
+          velocity.y = Y2;
+        } else {
+          velocity.y = Y1;
+        }
+      }
       velocity.normalize();
       velocity.mult(20);
 
@@ -50,7 +62,7 @@ class Bullet {
   }
 
   void display() {
-    if(dist(x, y, p.location.x, p.location.y) > 300);
+    if (dist(x, y, p.location.x, p.location.y) > 300);
     strokeWeight(1);
     fill(255, 100, 0);
     stroke(255);

@@ -8,16 +8,17 @@ class Game {
   float hi;
 
   void gsetup() {
+    ran = true;
     for (int q = 0; q < bullets.length; q++) {
       bullets[q] = new Bullet();
     }
     move = new PVector(0, 0);
-    walls[0]= new Wall(width/2, 5, width, 10);
-    walls[1]= new Wall(5, height/2, 10, height);
-    walls[2]= new Wall(width/2, height-45, width, 90);
-    walls[3]= new Wall(width-5, height/2, 10, height);
+    walls[0]= new Wall(width/2, 5-yBoundary, width+2*xBoundary, 10);
+    walls[1]= new Wall(5-xBoundary, height/2, 10, height+2*yBoundary);
+    walls[2]= new Wall(width/2, height-45+yBoundary, width+2*yBoundary, 10);
+    walls[3]= new Wall(width-5+xBoundary, height/2, 10, height+yBoundary*2);
     for (int y = 4; y < walls.length; y++) {
-      walls[y] = new Wall(random(0, width), random(0, height), random(width/40, width/10), random(height/40, height/10));
+      walls[y] = new Wall(random(0-xBoundary, width+xBoundary), random(0-yBoundary, height+yBoundary), random(width/40, width/10), random(height/40, height/10));
     }
     rectMode(CENTER);
 
@@ -37,7 +38,16 @@ class Game {
   }
 
   void gdraw() {
-
+    if (controller = true) {
+      p.velocity.x = 2*(X1/100);
+      p.velocity.y = 2*(Y1/100);
+      if (R31 == 0) {
+        p.sprinting = true;
+      } else {
+        p.sprinting = false;
+        gmouseReleased();
+      }
+    }
     //pushMatrix();
 
     //translate(width/2 - p.location.x, height/2 - p.location.y);
@@ -60,7 +70,7 @@ class Game {
       bullets[0].x = -99;
     }
 
-    distance = 2*sqrt(((mouseX - p.location.x)*(mouseX - p.location.x))+((mouseY - p.location.y)*(mouseY - p.location.y)))/(width/4);
+    distance = 2*sqrt(((mouseX - wi/2)*(mouseX - wi/2))+((mouseY - hi/2)*(mouseY - hi/2)))/(wi/4);
     if (w.weapon == 1) {
       accuracy = 0.5;
     } else if (w.weapon == 2) {
@@ -189,31 +199,32 @@ class Game {
         pause = true;
       }
     }
+    if (controller == false) {
+      if (keyCode == SHIFT) {
+        p.sprinting = true;
+      }
 
-    if (keyCode == SHIFT) {
-      p.sprinting = true;
+      if (key == 'a' || key == 'A') {
+        p.velocity.x = -2;
+        p.runninga = true;
+      }
+
+      if (key == 'd'|| key == 'D') {
+        p.velocity.x = 2;
+        p.runningd = true;
+      }
+
+      if (key == 'w' ||key == 'W') {
+        p.velocity.y = -2;
+        p.runningc = true;
+      }
+
+      if (key == 's'||key == 'S') {
+        p.velocity.y = 2;
+        p.runningb = true;
+      }
+    } else {
     }
-
-    if (key == 'a' || key == 'A') {
-      p.velocity.x = -2;
-      p.runninga = true;
-    }
-
-    if (key == 'd'|| key == 'D') {
-      p.velocity.x = 2;
-      p.runningd = true;
-    }
-
-    if (key == 'w' ||key == 'W') {
-      p.velocity.y = -2;
-      p.runningc = true;
-    }
-
-    if (key == 's'||key == 'S') {
-      p.velocity.y = 2;
-      p.runningb = true;
-    }
-
     if (key == '1' || key == '!') {
       w.weapon = 1;
     }

@@ -72,6 +72,12 @@ class Weapons {
         stroke(255);
         rect(width - 25 - o * 21, height-26, 16, 28, 2);
       }
+      stroke(0);
+      fill(125);
+      rect(90, height-81, 12, 12);
+      fill(0);
+      textSize(14);
+      text("1", 90, height-76);
     }
     if (weapon == 2) {
       stroke(0, 40);
@@ -87,6 +93,12 @@ class Weapons {
         stroke(255);
         rect(width - 20 - o * 11, height-26, 7, 28, 1);
       }
+      stroke(0);
+      fill(125);
+      rect(90, height-81, 12, 12);
+      fill(0);
+      textSize(14);
+      text("2", 90, height-76);
     }
     if (weapon == 3) {
       if (knife < 200) {
@@ -103,6 +115,13 @@ class Weapons {
       rect(width - 172, height-27, 200 * 1.5, 28, 3);
       fill(200, 200, 90, 200);
       rect(width - 22 - 1.5 * knife/2, height-27, knife * 1.5, 28, 3);
+      //Number
+      stroke(0);
+      fill(125);
+      rect(90, height-81, 12, 12);
+      fill(0);
+      textSize(14);
+      text("3", 90, height-76);
     }
 
     textFont(p.fontext, 20);
@@ -272,5 +291,16 @@ class Weapons {
     triangle(width-380, height-30, width-383, height-25, width-377, height-25);
     triangle(width-370, height-30, width-373, height-25, width-367, height-25);
     triangle(width-360, height-30, width-363, height-25, width-357, height-25);
+    
+    stroke(0);
+      fill(125);
+      rect(90, height-72, 12, 12);
+      rect(241, height-72, 12, 12);
+      rect(392, height-72, 12, 12);
+      fill(0);
+      textSize(14);
+      text("1", 90, height-67);
+      text("2", 241, height-67);
+      text("3", 392, height-67);
   }
 }

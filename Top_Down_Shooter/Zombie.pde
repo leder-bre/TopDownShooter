@@ -294,6 +294,4 @@ class Zombie {
       }
     }
   }
-  //how dank?
 }
-//as dank as possebru
