@@ -1,6 +1,7 @@
 class Wall {
   float x;
   float y;
+  float zhigh;
   float wide;
   float high;
   PVector move;
@@ -8,15 +9,23 @@ class Wall {
   Wall(float tempX, float tempY, float tempWide, float tempHigh) {
     x = tempX; 
     y = tempY;
+    zhigh = int(random(80, 120));
     wide = tempWide;
     high = tempHigh;
     move = new PVector(0, 0);
   }
 
   void display() {
+    pushMatrix();
+    translate(0, 0, 0);
     fill(50, 40, 30);
     stroke(0);
+    pushMatrix();
+    translate(x, y, zhigh/2);
+    box(wide, high, zhigh);
+    popMatrix();
     rect(x, y, wide, high);
+    popMatrix();
     /*
     if (frameCount % 2 == 0) {
       if (p.health > 0) {

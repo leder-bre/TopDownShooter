@@ -38,20 +38,41 @@ class Game {
   }
 
   void gdraw() {
-    if (controller = true) {
+    
+    println("X1: " + X1 + " X2: " + X2 + " Y1: " + Y1 + " Y2: " + Y2 + " TrigL: " + trigL + " TrigR: " + trigR + " R32: " + R32 + "R31: " + R31);
+ 
+    if (controller == true) {
+      myPort.write(1);
       p.velocity.x = 2*(X1/100);
       p.velocity.y = 2*(Y1/100);
-      if (R31 == 0) {
+      if (R32 == 0) {
         p.sprinting = true;
       } else {
         p.sprinting = false;
-        gmouseReleased();
+      }
+      if (trigR == 1) {
+       g.gmouseReleased(); 
+      }
+      if (trigL == 0 && trigPulled == false) {
+       w.weapon += 1;
+       trigPulled = true;
+       if(w.weapon == 4) {
+        w.weapon = 1;
+       }
+      }
+      if (trigL == 1) {
+       trigPulled = false; 
+      }
+      if (trigR == 1) {
+       trigPulled2 = false; 
       }
     }
     //pushMatrix();
 
     //translate(width/2 - p.location.x, height/2 - p.location.y);
 
+    //pushMatrix();
+    //translate(0, 0, 10);
 
     looking.x=mouseX - wi/2;
     looking.y=mouseY - hi/2;
@@ -59,15 +80,26 @@ class Game {
 
     //popMatrix();
 
-
+    pushMatrix();
+    translate(0, 0, 0);
 
     if (w.weapon == 3 && w.knife<50 && w.canknife == true) {
-      for (int i = 10; i < 60; i++) {
-        bullets[0].x = p.location.x + looking.x * i;
-        bullets[0].y = p.location.y + looking.y * i;
+      bullets[0].x = p.location.x;
+      bullets[0].y = p.location.y;
+      for (int i = 0; i < walls.length; i++) {
+        if (bullets[0].x > walls[i].x - walls[i].wide/2 && bullets[0].x < walls[i].x + walls[i].wide/2 && bullets[0].y > walls[i].y - walls[i].high/2 && bullets[0].y < walls[i].y + walls[i].high/2) {
+          w.canknife = false;
+          bullets[0].x = -99 - xBoundary;
+        }
+      } 
+      if (w.canknife == true) {
+        for (int i = 10; i < 60; i++) {
+          bullets[0].x = p.location.x + looking.x * i;
+          bullets[0].y = p.location.y + looking.y * i;
+        }
       }
     } else {
-      bullets[0].x = -99;
+      bullets[0].x = -99 - xBoundary;
     }
 
     distance = 2*sqrt(((mouseX - wi/2)*(mouseX - wi/2))+((mouseY - hi/2)*(mouseY - hi/2)))/(wi/4);
@@ -96,12 +128,15 @@ class Game {
       line(mouseX, mouseY + 10* distance, mouseX, mouseY + 15* distance);
       line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
 
-
+      strokeWeight(1);
       pushMatrix();
 
 
-      translate(width/2 - p.location.x, height/2 - p.location.y);
-
+      if (p.health > 0) {
+        translate(width/2 - p.location.x - ((mouseX-(width/2)))/w.lookDist, height/2 - p.location.y - ((mouseY-(height/2)))/w.lookDist);
+      } else {
+        translate(width/2 - p.location.x, height/2 - p.location.y);
+      }
 
       for (int q = 1; q < p.maxBullets; q++) {
         bullets[q].call();
@@ -142,8 +177,10 @@ class Game {
       }
 
       p.shoot();
-
+      pushMatrix();
+      translate(0, 0, 124);
       p.HUD2();
+      popMatrix();
 
       popMatrix();
 
@@ -155,10 +192,14 @@ class Game {
       line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
       popMatrix();
 
+      pushMatrix();
+      scale(0.81, 0.9, 1);
+      translate(149, 2, 125);
       fill(200);
       rect(width/2, height - 40, width, 80);
       p.HUD();
       w.run();
+      popMatrix();
 
       fill(200);
       textSize(25);
@@ -184,6 +225,7 @@ class Game {
 
       surviving = 0;
     }
+    popMatrix();
   }
 
   void gmouseReleased() {
@@ -223,17 +265,19 @@ class Game {
         p.velocity.y = 2;
         p.runningb = true;
       }
-    } else {
     }
     if (key == '1' || key == '!') {
       w.weapon = 1;
+      w.lookDist = 3;
     }
 
     if (key == '2' || key == '@') {
       w.weapon = 2;
+      w.lookDist = 5;
     }
     if (key == '3' || key == '#') {
       w.weapon = 3;
+      w.lookDist = 7;
     }
   }
 

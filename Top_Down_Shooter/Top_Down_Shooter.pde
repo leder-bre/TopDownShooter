@@ -7,24 +7,23 @@
 //a single player that has to fight using 3
 //weapons against increasingly powerful waves
 //of variably powerful zombies
-
 /*
 Ideas:
-3D
-Hair
-Controller
-*/
+ 3D
+ Hair
+ Controller: When release controller stay at location
+ */
 
 import processing.sound.*;
-boolean controller = true;
+boolean controller = false;
 import processing.serial.*;
 Serial myPort;
 Game g;
 Player p;
 Bullet bullets[] = new Bullet[1000000];
-int xBoundary = 100;
-int yBoundary = 100;
-Wall walls[] = new Wall[80 + int((xBoundary+yBoundary)/2)];
+int xBoundary = 200;
+int yBoundary = 200;
+Wall walls[] = new Wall[40 + int((xBoundary+yBoundary)/8)];
 Weapons w;
 Pickup pick;
 Zombie z[] = new Zombie[100];
@@ -46,18 +45,22 @@ int R31; //left
 float X2;
 float Y2;
 int R32;
+int trigL = 1;
+int trigR = 1;
+boolean trigPulled = false;
+boolean trigPulled2 = false;
 boolean ran = false;
 
 void setup() {
-  if(controller == true) {
-  String portName = Serial.list()[2];
-  if(ran == false) {
-  myPort = new Serial(this, portName, 9600);
-  }
-  myPort.bufferUntil('\n');
+  if (controller == true) {
+    String portName = Serial.list()[2];
+    if (ran == false) {
+      myPort = new Serial(this, portName, 9600);
+    }
+    myPort.bufferUntil('\n');
   }
   smooth();
-  size(1280, 750);
+  size(1280, 750, P3D);
   zFont = createFont("Courier Bold", 10);
   run = false;
   wi = width;
@@ -80,25 +83,27 @@ void setup() {
 }
 
 void draw() {
-  
+
   /*
   myPort.write(1);
-  
-  if(myPort.available() > 0) {
-  String positions = (myPort.readStringUntil('\n'));
-  String[] numb = (split(positions, ' '));
-  X1  = map(float(numb[0]), 511, 0, 0, 100);
-  Y1  = map(float(numb[1]), 505, 0, 0, 100);
-  R31 = int(numb[2]);
-  X2  = map(float(numb[3]), 520, 0, 0, 100);
-  Y2  = map(float(numb[4]), 515, 0, 0, 100);
-  R32 = int(numb[5]);
-  }
-  */
-  //println("X: " + X1 + " Y: " + Y1);
-  
-  println("xR31: " + R31 + " R32: " + R32);
-  
+   
+   if(myPort.available() > 0) {
+   String positions = (myPort.readStringUntil('\n'));
+   String[] numb = (split(positions, ' '));
+   X1  = map(float(numb[0]), 511, 0, 0, 100);
+   Y1  = map(float(numb[1]), 505, 0, 0, 100);
+   R31 = int(numb[2]);
+   X2  = map(float(numb[3]), 520, 0, 0, 100);
+   Y2  = map(float(numb[4]), 515, 0, 0, 100);
+   R32 = int(numb[5]);
+   }
+   
+   println("X: " + X1 + " Y: " + Y1);
+   
+   println("xR31: " + R31 + " R32: " + R32);
+   
+   */
+
   stroke(0);
   if (run == false) {
     background(0);
@@ -116,8 +121,9 @@ void draw() {
     textSize(107);
     if (title == -1) {
       text("Zombie Arena", wi/2, h/4);
-    }  else if (title == 7) {text("Legacy of The Gordonger", wi/2, h/4);}
-    else if (title == 6) {
+    } else if (title == 7) {
+      text("Legacy of The Gordonger", wi/2, h/4);
+    } else if (title == 6) {
       text("They call me Bread", wi/2, h/4);
     } else if (title == 5) {
       text("Arma VI Simulator 2016", wi/2, h/4);
@@ -180,13 +186,13 @@ void draw() {
     rect(width-48, h/2+91, 30, 76, 5);
     rect(width-99, h/2+151, 30, 76, 5);
     pushMatrix();
-    translate(width-93, h/2+92);
+    translate(width-93, h/2+92, -1); //Translate
     rotate(0.2);
     rect(0, 0, 30, 76, 5);
     popMatrix();
 
     pushMatrix();
-    translate(width-36, h/2+158);
+    translate(width-36, h/2+158, -1); //Translate
     rotate(-0.4);
     rect(0, 0, 30, 76, 5);
     popMatrix();
@@ -194,31 +200,31 @@ void draw() {
     fill(p.sr, p.sg, p.sb);
 
     pushMatrix();
-    translate(width-113, h/2+-28);
+    translate(width-113, h/2+-28, -1); //Translate
     rotate(0.2);
     rect(0, 0, 20, 66, 5);
     popMatrix();
 
     pushMatrix();
-    translate(width-71, h/2);
+    translate(width-71, h/2, 1); //Translate
     rotate(-0.1);
     rect(0, 0, 75, 123, 10);
     popMatrix();
 
     pushMatrix();
-    translate(width-36, h/2+-31);
+    translate(width-36, h/2+-31, 2); //Translate
     rotate(-0.4);
     rect(0, 0, 20, 66, 5);
     popMatrix();
 
     pushMatrix();
-    translate(width-28, h/2+12);
+    translate(width-28, h/2+12, 3); //Translate
     rotate(0.1);
     rect(0, 0, 20, 66, 5);
     popMatrix();
 
     pushMatrix();
-    translate(width-140, h/2+25);
+    translate(width-140, h/2+25, -3); //Translate
     rotate(0.7);
     rect(0, 0, 20, 66, 5);
     popMatrix();
@@ -295,23 +301,44 @@ void mouseReleased() {
 }
 
 void serialEvent (Serial myPort) {
-  
+
   String positions = (myPort.readStringUntil('\n'));
   String[] numb = (split(positions, ' '));
-  X2  = map(float(numb[0]), 511, 0, 0, 100);
-  Y2  = map(float(numb[1]), 505, 0, 0, 100);
-  if(Y2==-0.1980198) {
-   Y2 = 0; 
+  X1  = map(float(numb[0]), 511, 0, 0, -100);
+  Y1  = map(float(numb[1]), 505, 0, 0, -100);
+
+
+
+  R32 = int(numb[2]);
+
+  float tempX2  = map(float(numb[3]), 520, 0, 0, -100);
+  float tempY2  = map(float(numb[4]), 515, 0, 0, -100);
+
+  if (tempY2 != 0.19417477 && tempY2 != 0.38834953 && tempY2 != 0) {
+    Y2  = map(float(numb[4]), 515, 0, 0, -100);
   }
-  R31 = int(numb[2]);
-  X1  = map(float(numb[3]), 520, 0, 0, 100);
-  if(X1 == -0.1923077) {
-   X1 = 0; 
+  if (tempX2 != 0.1923077 && tempX2 != 0) {
+    X2  = map(float(numb[3]), 520, 0, 0, -100);
   }
-  Y1  = map(float(numb[4]), 515, 0, 0, 100);
-  if(Y1 == -0.19417477) {
-   Y1 = 0; 
+
+
+
+  if (Y1==0.1980198) {
+    Y1 = 0;
   }
-  R32 = int(numb[5]);
- 
+  if (X1==0.19569471) {
+    X1 = 0;
+  }
+  /*
+  if (Y2==0.19417477 || Y2==0.38834953) {
+   Y2 = 0;
+   }
+   if (X2==0.1923077) {
+   X2 = 0;
+   }
+   */
+
+  R31 = int(numb[5]);
+  trigL = int(numb[6]);
+  trigR = int(numb[7]);
 }

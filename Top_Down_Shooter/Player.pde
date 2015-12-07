@@ -83,7 +83,7 @@ class Player {
         runtimer -= 1;
       }
 
-      if (keyPressed) {
+      if (keyPressed && controller == false) {
 
         if (key == 'r' || key == 'R') {
           if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
@@ -102,6 +102,23 @@ class Player {
             w.totmammo = 0;
           }
         }
+      } else if (controller == true && R31 == 0 && trigPulled2 == false) {
+        trigPulled2 = true;
+        if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
+            w.totpammo -= 15 - w.pammo;
+            w.pammo = 15;
+          } else if (w.weapon == 1 && w.pammo + w.totpammo < 15) {
+            w.pammo += w.totpammo;
+            w.totpammo = 0;
+          }
+
+          if (w.weapon == 2 && w.mammo + w.totmammo >= 30) {
+            w.totmammo -= 30 - w.mammo;
+            w.mammo = 30;
+          } else if (w.weapon == 2 && w.mammo + w.totmammo < 30) {
+            w.mammo += w.totmammo;
+            w.totmammo = 0;
+          }
       }
 
       /*
@@ -196,23 +213,60 @@ class Player {
         rotate(atan2(mouseY-height/2, mouseX-width/2));
       } else {
         //if (X2 != 0 && Y2 != 0) {
-          rotate(atan2(height/2 + Y2 - height/2, width/2 + X2 - width/2));
+        rotate(atan2(height/2 + Y2 - height/2, width/2 + X2 - width/2));
         //} else {
         //  rotate(atan2(height/2 + Y1 - height/2, width/2 + X1 - width/2));
         //}
       }
       fill(210, 200, 150);
-      ellipse(legs, 10, 15, 12);
-      ellipse(-1*legs, -10, 15, 12);
-
       fill(pr, pg, pb);
 
-      rect(legs/2 * -1, -10, legs, 10);
-      rect(legs/2, 10, legs, 10);
+      pushMatrix();     //Right Leg
+      fill(pr, pg, pb);
+      translate(-legs/3, -10, -9);
+      rotateY(legs/50);
+      box(18, 13, 50);
+      translate(4, 0, -23);
+      fill(210, 200, 150);
+      box(30, 8, 10);
+      popMatrix();
+
+      pushMatrix();      //Left Leg
+      fill(pr, pg, pb);
+      translate(legs/3, 10, -9);
+      rotateY(-legs/50);
+      box(18, 13, 50);
+      translate(4, 0, -23);
+      fill(210, 200, 150);
+      box(30, 8, 10);
+      popMatrix();
+
+      fill(sr, sg, sb);   //Right Arm
+      pushMatrix();
+      rotateZ(0.19);
+      translate(14, 14, 34); 
+      box(21, 11, 46);
+      popMatrix();
+
+      pushMatrix();
+      rotateZ(-6.80);
+      translate(16, 25, 33);
+      box(20, 10, 42);
+      popMatrix();
+
+      pushMatrix();        //Right Hand
+      fill(210, 200, 150);
+      noStroke();
+      translate(38, 6, 50);
+      sphere(6);
+      popMatrix();
 
       if (w.weapon == 1) {
         fill(sr, sg, sb);
+        stroke(0);
+        strokeWeight(1);
         beginShape();
+
         vertex(8, -18);
         vertex(28, -10);
         vertex(38, 1);
@@ -228,10 +282,6 @@ class Player {
         vertex(-10, -17);
 
         endShape(CLOSE);
-
-        fill(210, 200, 150);
-
-        ellipse(34, 2, 15, 10);
 
         fill(200, 220, 220);
 
@@ -299,16 +349,27 @@ class Player {
         rect(0, 11, 5, 11);
         triangle(-2, 16, 3, 14, 2, 22);
         strokeWeight(1);
-        stroke(0);
+        stroke(15);
         popMatrix();
       }
 
-      fill(sr, sg, sb);
-      rect(0, 0, 15, 40, 5);
-
+      noStroke();
+      pushMatrix();
+      translate(0, 0, 76);
+      fill(0);
+      sphere(13);
+      translate(0, 0, 4);
       fill(210, 200, 150);
-      ellipse(0, 0, 20, 20);
+      sphere(11);
+      popMatrix();
 
+      fill(sr, sg, sb);
+      pushMatrix();
+      stroke(0);
+      translate(0, 0, 38);
+      box(18, 38, 50);
+      popMatrix();
+      rect(0, 0, 15, 40, 5);
 
       if (bang > 0) {
         noStroke();
@@ -454,8 +515,7 @@ class Player {
           }
         }
       } else {
-
-        if (R31 == 0) {
+        if (trigR == 0) {
           if (w.weapon == 3 && w.knife == 200) {
             if (punch == false && w.shot == false) {
               punch = true;
@@ -497,8 +557,9 @@ class Player {
       health = 0;
       dead += 1;
       if (dead > 100) {
-        fill(255);
+        fill(255, 200);
         pushMatrix();
+        translate(0, 0, 125);
         rect(p.location.x, p.location.y+40, 100, 30, 3);   
         rect(p.location.x, p.location.y+80, 100, 30, 3); 
         fill(0);

@@ -18,6 +18,7 @@ class Bullet {
         velocity.x = mouseX - width/2;
         velocity.y = mouseY - height/2;
       } else {
+        print("CONTROLLER");
         if(X2 != 0) {
          velocity.x = X2;
         } else {
@@ -55,8 +56,8 @@ class Bullet {
   void collide() {
     for (int i = 0; i < walls.length; i++) {
       if (x > walls[i].x - walls[i].wide/2 && x < walls[i].x + walls[i].wide/2 && y > walls[i].y - walls[i].high/2 && y < walls[i].y + walls[i].high/2) {
-        x = -100;
-        y = -100;
+        x = -100 - xBoundary;
+        y = -100 - yBoundary;
       }
     }
   }

@@ -10,6 +10,7 @@ class Weapons {
   int knife = 200;
   boolean canknife = true;
   boolean shot = false;
+  int lookDist = 3;
   /*
   Weapon
    1  = Pistol

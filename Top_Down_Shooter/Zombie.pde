@@ -236,7 +236,7 @@ class Zombie {
 
   void died() {
     if (dead == 1) {
-      x = -100;
+      x = -100-xBoundary;
     }
     pushMatrix();
     translate(x, y);
@@ -282,7 +282,7 @@ class Zombie {
   }
 
   void execute() {
-    if (x > 1) {
+    if (x > 1 - xBoundary) {
       if (dead < 1) {
         move();
         display();
