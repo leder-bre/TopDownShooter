@@ -202,7 +202,7 @@ class Zombie {
       if (w.weapon != 3) {
         if (dist(bullets[q].x, bullets[q].y, x, y) < 20) {   
           bleeding = 100;
-          bullets[q].x = -100;
+          bullets[q].x = -100 - xBoundary;
           if (w.weapon == 1) {
             health -= 55;
           } else if (w.weapon == 2) {

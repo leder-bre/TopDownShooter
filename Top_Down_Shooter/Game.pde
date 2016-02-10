@@ -140,7 +140,7 @@ class Game {
 
       for (int q = 1; q < p.maxBullets; q++) {
         bullets[q].call();
-        if (bullets[q].x > -100 && bullets[q].x < width+100 && bullets[q].y > -100 && bullets[q].y < height +100) {
+        if (bullets[q].x > -100-xBoundary && bullets[q].x < width+100+xBoundary && bullets[q].y > -100-yBoundary && bullets[q].y < height + 100 + yBoundary) {
           bullets[q].move();
           bullets[q].display();
           bullets[q].collide();
@@ -204,7 +204,10 @@ class Game {
       fill(200);
       textSize(25);
       textAlign(RIGHT);
+      pushMatrix();
+      translate(-154, 75, 130);
       text("Wave: " + wavelength/2, width-10, 30);
+      popMatrix();
       textAlign(LEFT);
 
       if (surviving == 0) {
@@ -212,7 +215,10 @@ class Game {
           countdown = 200 + wavelength * 30;
         }
       }
+      pushMatrix();
+      translate(-132, 65, 130);
       text("Next Wave: " + countdown/60, width-175, 60);
+      popMatrix();
       countdown -= 1;
       if (countdown == 0) {
         wavelength += 2;

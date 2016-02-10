@@ -18,6 +18,7 @@ import processing.sound.*;
 boolean controller = false;
 import processing.serial.*;
 Serial myPort;
+boolean soundon = false;
 Game g;
 Player p;
 Bullet bullets[] = new Bullet[1000000];

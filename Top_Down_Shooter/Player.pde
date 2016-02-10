@@ -105,20 +105,20 @@ class Player {
       } else if (controller == true && R31 == 0 && trigPulled2 == false) {
         trigPulled2 = true;
         if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
-            w.totpammo -= 15 - w.pammo;
-            w.pammo = 15;
-          } else if (w.weapon == 1 && w.pammo + w.totpammo < 15) {
-            w.pammo += w.totpammo;
-            w.totpammo = 0;
-          }
+          w.totpammo -= 15 - w.pammo;
+          w.pammo = 15;
+        } else if (w.weapon == 1 && w.pammo + w.totpammo < 15) {
+          w.pammo += w.totpammo;
+          w.totpammo = 0;
+        }
 
-          if (w.weapon == 2 && w.mammo + w.totmammo >= 30) {
-            w.totmammo -= 30 - w.mammo;
-            w.mammo = 30;
-          } else if (w.weapon == 2 && w.mammo + w.totmammo < 30) {
-            w.mammo += w.totmammo;
-            w.totmammo = 0;
-          }
+        if (w.weapon == 2 && w.mammo + w.totmammo >= 30) {
+          w.totmammo -= 30 - w.mammo;
+          w.mammo = 30;
+        } else if (w.weapon == 2 && w.mammo + w.totmammo < 30) {
+          w.mammo += w.totmammo;
+          w.totmammo = 0;
+        }
       }
 
       /*
@@ -243,47 +243,59 @@ class Player {
 
       fill(sr, sg, sb);   //Right Arm
       pushMatrix();
-      rotateZ(0.19);
+      rotateZ(-0.16);
       translate(14, 14, 34); 
-      box(21, 11, 46);
+      box(21, 9, 46);
       popMatrix();
 
       pushMatrix();
-      rotateZ(-6.80);
-      translate(16, 25, 33);
-      box(20, 10, 42);
+      rotateZ(-6.72);
+      translate(25, 21, 32);
+      box(15, 8, 42);
       popMatrix();
 
       pushMatrix();        //Right Hand
       fill(210, 200, 150);
       noStroke();
-      translate(38, 6, 50);
-      sphere(6);
+      translate(43, 4, 52);
+      sphere(7);
       popMatrix();
 
       if (w.weapon == 1) {
         fill(sr, sg, sb);
         stroke(0);
-        strokeWeight(1);
-        beginShape();
+        pushMatrix();
+        rotateZ(-6.39);
+        translate(12, -16, 36);
+        box(22, 10, 30);
+        popMatrix();
 
-        vertex(8, -18);
-        vertex(28, -10);
-        vertex(38, 1);
-        vertex(38, 3);
-        vertex(26, 13);
-        vertex(1, 20);
+        pushMatrix();
+        rotateZ(-5.73);
+        translate(15, -25, 35);
+        box(22, 9, 30);
+        popMatrix();
 
-        vertex(4, 7);
-        vertex(23, 7);
-        vertex(27, 5);
-        vertex(29, 3);
-        vertex(21, -5);
-        vertex(-10, -17);
-
-        endShape(CLOSE);
+        pushMatrix();        //Left Hand
+        fill(210, 200, 150);
+        noStroke();
+        translate(39, -3, 50);
+        sphere(6);
+        popMatrix();
 
         fill(200, 220, 220);
+
+        stroke(0);
+        pushMatrix();
+        translate(58, -1, 52);
+        box(22, 6, 20);
+        popMatrix();
+
+        pushMatrix();
+        rotateY(-1.00);
+        translate(69, -1, -8);
+        box(17, 5, 6);
+        popMatrix();
 
         rect(50, 2, 14, 3);
 
@@ -373,12 +385,18 @@ class Player {
 
       if (bang > 0) {
         noStroke();
-        fill(255, 200, 200, bang/4);
-        ellipse(57, 2, bang/10-5, bang/10-5);
-        fill(255, 80, 20, bang);
-        ellipse(57, 2, bang/10-10, bang/10-10);
-        fill(255, 0, 0, bang/2);
-        ellipse(57, 2, bang/12-10, bang/12-10);
+        pushMatrix();
+        translate(71, 0, 69);
+
+        fill(255, 200, 200, bang/5);
+        sphere(bang/20-5);
+
+        fill(255, 80, 20, bang/3);
+        sphere(bang/20-10);
+
+        fill(255, 0, 0, bang);
+        sphere(bang/22-10);
+        popMatrix();
         bang -= 30;
       }
     } else {
@@ -481,7 +499,9 @@ class Player {
           if (w.weapon == 3 && w.knife == 200) {
             if (punch == false && w.shot == false) {
               punch = true;
-              knife.play();
+              if (soundon == true) {
+                knife.play();
+              }
               w.shot = true;
               w.knife = 0;
             }
@@ -492,7 +512,9 @@ class Player {
                 bang = 255;
                 w.canShoot = w.fireRate;
                 w.shot=true;
-                gunshot.play();
+                if (soundon == true) {
+                  gunshot.play();
+                }
                 maxBullets += 1;
                 w.recoil += 20;
                 if (w.weapon == 1) {
@@ -519,7 +541,9 @@ class Player {
           if (w.weapon == 3 && w.knife == 200) {
             if (punch == false && w.shot == false) {
               punch = true;
-              knife.play();
+              if (soundon == true) {
+                knife.play();
+              }
               w.shot = true;
               w.knife = 0;
             }
@@ -530,7 +554,9 @@ class Player {
                 bang = 255;
                 w.canShoot = w.fireRate;
                 w.shot=true;
-                gunshot.play();
+                if (soundon == true) {
+                  gunshot.play();
+                }
                 maxBullets += 1;
                 w.recoil += 20;
                 if (w.weapon == 1) {
