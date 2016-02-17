@@ -15,7 +15,7 @@ Ideas:
  */
 
 import processing.sound.*;
-boolean controller = false;
+boolean controller = true;
 import processing.serial.*;
 Serial myPort;
 boolean soundon = false;

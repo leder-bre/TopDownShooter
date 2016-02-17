@@ -39,7 +39,7 @@ class Game {
 
   void gdraw() {
     
-    println("X1: " + X1 + " X2: " + X2 + " Y1: " + Y1 + " Y2: " + Y2 + " TrigL: " + trigL + " TrigR: " + trigR + " R32: " + R32 + "R31: " + R31);
+    println("X1: " + int(X1) + "\tX2: " + int(X2) + "\tY1: " + int(Y1) + "\tY2: " + int(Y2) + "\tTrigL: " + int(trigL) + "\tTrigR: " + int(trigR) + "\tR32: " + int(R32) + "\tR31: " + int(R31));
  
     if (controller == true) {
       myPort.write(1);
