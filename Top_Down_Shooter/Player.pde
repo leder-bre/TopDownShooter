@@ -183,6 +183,9 @@ class Player {
   }
 
   void display() {
+    
+    
+    
     if (health > 0) {
 
 
@@ -203,11 +206,18 @@ class Player {
 
     stroke(0);
     strokeWeight(1);
-
+    
     pushMatrix();
-
-    translate(location.x, location.y);
-
+    translate(width/2, height/2, -32);
+    fill(44, 27, 25);
+    box(width + 2 * xBoundary, height + 2 * yBoundary, 2);
+    popMatrix();
+    
+    pushMatrix();
+    translate(location.x, location.y, 26);
+    
+    pointLight(100, 100, 100, 0, 0, 150);
+    
     if (health > 0) {
       if (controller == false) {
         rotate(atan2(mouseY-height/2, mouseX-width/2));
@@ -218,6 +228,9 @@ class Player {
         //  rotate(atan2(height/2 + Y1 - height/2, width/2 + X1 - width/2));
         //}
       }
+      
+      spotLight(200, 200, 200, 0, 0, 0, 0.00, 0.00, 0.00, 45, 1);
+      
       fill(210, 200, 150);
       fill(pr, pg, pb);
 

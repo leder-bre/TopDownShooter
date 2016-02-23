@@ -39,6 +39,13 @@ class Game {
 
   void gdraw() {
     
+    ambientLight(60, 60, 60);
+    pushMatrix();
+    
+    popMatrix();
+    
+    p.display();
+    
     println("X1: " + int(X1) + "\tX2: " + int(X2) + "\tY1: " + int(Y1) + "\tY2: " + int(Y2) + "\tTrigL: " + int(trigL) + "\tTrigR: " + int(trigR) + "\tR32: " + int(R32) + "\tR31: " + int(R31));
  
     if (controller == true) {
@@ -193,8 +200,8 @@ class Game {
       popMatrix();
 
       pushMatrix();
-      scale(0.81, 0.9, 1);
-      translate(149, 2, 125);
+      scale(0.70, 0.8, 1);
+      translate(276, 44, 198);
       fill(200);
       rect(width/2, height - 40, width, 80);
       p.HUD();

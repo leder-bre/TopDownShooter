@@ -9,7 +9,7 @@ class Wall {
   Wall(float tempX, float tempY, float tempWide, float tempHigh) {
     x = tempX; 
     y = tempY;
-    zhigh = int(random(80, 120));
+    zhigh = int(random(120, 180));
     wide = tempWide;
     high = tempHigh;
     move = new PVector(0, 0);

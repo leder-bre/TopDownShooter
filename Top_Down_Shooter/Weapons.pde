@@ -136,7 +136,7 @@ class Weapons {
     popMatrix();
 
     pushMatrix();
-    translate(0, height - 71);
+    translate(0, height - 70);
     fill(180, 200);
     noStroke();
     rect(206, 41, 400, 69, 2);

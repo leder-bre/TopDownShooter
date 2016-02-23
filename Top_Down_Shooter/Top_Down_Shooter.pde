@@ -15,7 +15,7 @@ Ideas:
  */
 
 import processing.sound.*;
-boolean controller = true;
+boolean controller = false;
 import processing.serial.*;
 Serial myPort;
 boolean soundon = false;
@@ -53,6 +53,7 @@ boolean trigPulled2 = false;
 boolean ran = false;
 
 void setup() {
+  lights();
   if (controller == true) {
     String portName = Serial.list()[2];
     if (ran == false) {
