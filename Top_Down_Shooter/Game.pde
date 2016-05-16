@@ -38,17 +38,17 @@ class Game {
   }
 
   void gdraw() {
-    
-    ambientLight(60, 60, 60);
+
+    //ambientLight(60, 60, 60);
     pushMatrix();
-    
+
     popMatrix();
-    
+
     p.display();
-    
-    println("X1: " + int(X1) + "\tX2: " + int(X2) + "\tY1: " + int(Y1) + "\tY2: " + int(Y2) + "\tTrigL: " + int(trigL) + "\tTrigR: " + int(trigR) + "\tR32: " + int(R32) + "\tR31: " + int(R31));
- 
-    if (controller == true) {
+    if (controller) {
+      println("X1: " + int(X1) + "\tX2: " + int(X2) + "\tY1: " + int(Y1) + "\tY2: " + int(Y2) + "\tTrigL: " + int(trigL) + "\tTrigR: " + int(trigR) + "\tR32: " + int(R32) + "\tR31: " + int(R31));
+    }
+    if (controller) {
       myPort.write(1);
       p.velocity.x = 2*(X1/100);
       p.velocity.y = 2*(Y1/100);
@@ -58,20 +58,20 @@ class Game {
         p.sprinting = false;
       }
       if (trigR == 1) {
-       g.gmouseReleased(); 
+        g.gmouseReleased();
       }
       if (trigL == 0 && trigPulled == false) {
-       w.weapon += 1;
-       trigPulled = true;
-       if(w.weapon == 4) {
-        w.weapon = 1;
-       }
+        w.weapon += 1;
+        trigPulled = true;
+        if (w.weapon == 4) {
+          w.weapon = 1;
+        }
       }
       if (trigL == 1) {
-       trigPulled = false; 
+        trigPulled = false;
       }
       if (trigR == 1) {
-       trigPulled2 = false; 
+        trigPulled2 = false;
       }
     }
     //pushMatrix();
@@ -90,7 +90,7 @@ class Game {
     pushMatrix();
     translate(0, 0, 0);
 
-    if (w.weapon == 3 && w.knife<50 && w.canknife == true) {
+    if (w.weapon == 3 && w.knife<50 && w.canknife) {
       bullets[0].x = p.location.x;
       bullets[0].y = p.location.y;
       for (int i = 0; i < walls.length; i++) {
@@ -99,7 +99,7 @@ class Game {
           bullets[0].x = -99 - xBoundary;
         }
       } 
-      if (w.canknife == true) {
+      if (w.canknife) {
         for (int i = 10; i < 60; i++) {
           bullets[0].x = p.location.x + looking.x * i;
           bullets[0].y = p.location.y + looking.y * i;
@@ -130,11 +130,12 @@ class Game {
       background(100);
       stroke(255);
       strokeWeight(2);
+      hint(DISABLE_DEPTH_TEST);
       line(mouseX + 10 * distance, mouseY, mouseX + 15* distance, mouseY);
       line(mouseX - 10* distance, mouseY, mouseX - 15* distance, mouseY);
       line(mouseX, mouseY + 10* distance, mouseX, mouseY + 15* distance);
       line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
-
+      hint(ENABLE_DEPTH_TEST);
       strokeWeight(1);
       pushMatrix();
 
@@ -184,29 +185,26 @@ class Game {
       }
 
       p.shoot();
-      pushMatrix();
-      translate(0, 0, 124);
+      hint(DISABLE_DEPTH_TEST);
       p.HUD2();
-      popMatrix();
+      hint(ENABLE_DEPTH_TEST);
 
       popMatrix();
 
-      pushMatrix();
       stroke(255);
+      hint(DISABLE_DEPTH_TEST);
       line(mouseX + 10 * distance, mouseY, mouseX + 15* distance, mouseY);
       line(mouseX - 10* distance, mouseY, mouseX - 15* distance, mouseY);
       line(mouseX, mouseY + 10* distance, mouseX, mouseY + 15* distance);
       line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
-      popMatrix();
+      hint(ENABLE_DEPTH_TEST);
 
-      pushMatrix();
-      scale(0.70, 0.8, 1);
-      translate(276, 44, 198);
+      hint(DISABLE_DEPTH_TEST);
       fill(200);
       rect(width/2, height - 40, width, 80);
       p.HUD();
       w.run();
-      popMatrix();
+      hint(ENABLE_DEPTH_TEST);
 
       fill(200);
       textSize(25);
@@ -248,7 +246,7 @@ class Game {
   void gkeyPressed() {
     if (key == 'p' || key== 'P') {
 
-      if (pause == true) {
+      if (pause) {
         pause = false;
       } else {
         pause = true;

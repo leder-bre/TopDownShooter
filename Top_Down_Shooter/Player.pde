@@ -79,11 +79,11 @@ class Player {
 
 
 
-      if (runtimer > 0 && (sprinting == false || sprint == 0)) {
+      if (runtimer > 0 && (!sprinting || sprint == 0)) {
         runtimer -= 1;
       }
 
-      if (keyPressed && controller == false) {
+      if (keyPressed && !controller) {
 
         if (key == 'r' || key == 'R') {
           if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
@@ -102,7 +102,7 @@ class Player {
             w.totmammo = 0;
           }
         }
-      } else if (controller == true && R31 == 0 && trigPulled2 == false) {
+      } else if (controller && R31 == 0 && !trigPulled2) {
         trigPulled2 = true;
         if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
           w.totpammo -= 15 - w.pammo;
@@ -153,14 +153,14 @@ class Player {
 
       for (int i = 0; i < walls.length; i++) {
         if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
-          if (controller == false) {
+          if (!controller) {
             location.y-=velocity.y * 1.1;
           } else {
             location.y-=velocity.y * 2;
           }
         }
         if (location.x+velocity.x > walls[i].x - walls[i].wide/2 && location.x+velocity.x < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-          if (controller == false) {
+          if (!controller) {
             location.x-=velocity.x * 1.1;
           } else {
             location.x-=velocity.x * 2;
@@ -175,7 +175,7 @@ class Player {
         velocity.mult(1.5);
         runtimer = 60;
       }
-      if (frameCount % 2 == 0 && sprint < 300 && sprinting == false && runtimer == 0) {
+      if (frameCount % 2 == 0 && sprint < 300 && !sprinting && runtimer == 0) {
         sprint+=1;
       }
       location.add(velocity);
@@ -216,10 +216,10 @@ class Player {
     pushMatrix();
     translate(location.x, location.y, 26);
     
-    pointLight(100, 100, 100, 0, 0, 150);
+    //pointLight(100, 100, 100, 0, 0, 150);
     
     if (health > 0) {
-      if (controller == false) {
+      if (!controller) {
         rotate(atan2(mouseY-height/2, mouseX-width/2));
       } else {
         //if (X2 != 0 && Y2 != 0) {
@@ -229,7 +229,7 @@ class Player {
         //}
       }
       
-      spotLight(200, 200, 200, 0, 0, 0, 0.00, 0.00, 0.00, 45, 1);
+      //spotLight(200, 200, 200, 0, 0, 0, 0.00, 0.00, 0.00, 45, 1);
       
       fill(210, 200, 150);
       fill(pr, pg, pb);
@@ -507,10 +507,10 @@ class Player {
   void shoot() {
     if (health > 0) {
 
-      if (controller == false) {
+      if (!controller) {
         if (mousePressed) {
           if (w.weapon == 3 && w.knife == 200) {
-            if (punch == false && w.shot == false) {
+            if (!punch && !w.shot) {
               punch = true;
               if (soundon == true) {
                 knife.play();
@@ -520,7 +520,7 @@ class Player {
             }
           }
           if (w.weapon != 3) {
-            if (w.canShoot <= 0 && w.shot == false) {
+            if (w.canShoot <= 0 && !w.shot) {
               if (w.weapon == 1 && w.pammo > 0 || w.weapon == 2 && w.mammo > 0) {
                 bang = 255;
                 w.canShoot = w.fireRate;
@@ -552,7 +552,7 @@ class Player {
       } else {
         if (trigR == 0) {
           if (w.weapon == 3 && w.knife == 200) {
-            if (punch == false && w.shot == false) {
+            if (!punch && !w.shot) {
               punch = true;
               if (soundon == true) {
                 knife.play();
@@ -562,7 +562,7 @@ class Player {
             }
           }
           if (w.weapon != 3) {
-            if (w.canShoot <= 0 && w.shot == false) {
+            if (w.canShoot <= 0 && !w.shot) {
               if (w.weapon == 1 && w.pammo > 0 || w.weapon == 2 && w.mammo > 0) {
                 bang = 255;
                 w.canShoot = w.fireRate;

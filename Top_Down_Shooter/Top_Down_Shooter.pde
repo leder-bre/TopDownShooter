@@ -53,8 +53,8 @@ boolean trigPulled2 = false;
 boolean ran = false;
 
 void setup() {
-  lights();
-  if (controller == true) {
+  //lights();
+  if (controller) {
     String portName = Serial.list()[2];
     if (ran == false) {
       myPort = new Serial(this, portName, 9600);
@@ -282,7 +282,7 @@ void draw() {
 }
 
 void keyReleased() {
-  if (run == true) {
+  if (run) {
     g.gkeyReleased();
   }
 }
@@ -291,13 +291,13 @@ void keyPressed() {
   if (key == '=') {
     title = int(random(8));
   }
-  if (run == true) {
+  if (run) {
     g.gkeyPressed();
   }
 }
 
 void mouseReleased() {
-  if (run == true) {
+  if (run) {
     g.gmouseReleased();
   }
 }

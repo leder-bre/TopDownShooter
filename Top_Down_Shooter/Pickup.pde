@@ -38,7 +38,7 @@ class Pickup {
           }
         }  
 
-        if (a == false && pi == true) {
+        if (a == false && pi) {
           ax = int(random(width));
           ay = int(random(height - 100));
           for (int i = 0; i < walls.length; i++) {
@@ -49,7 +49,7 @@ class Pickup {
           }
           a = true;
           arot = int(random(100));
-        } else if (a == true && pi == false) {
+        } else if (a && pi == false) {
           px = int(random(width));
           py = int(random(height - 100));
           for (int i = 0; i < walls.length; i++) {
@@ -91,7 +91,7 @@ class Pickup {
 
   void display() {
 
-    if (dist(p.location.x, p.location.y, hx, hy) < 20 && h == true && p.health < 300) {
+    if (dist(p.location.x, p.location.y, hx, hy) < 20 && h && p.health < 300) {
       p.health += 60;
       if (p.health > 300) {
         p.health = 300;
@@ -99,7 +99,7 @@ class Pickup {
       h = false;
     }
 
-    if (dist(p.location.x, p.location.y, ax, ay) < 20 && a == true && w.totmammo < 60) {
+    if (dist(p.location.x, p.location.y, ax, ay) < 20 && a && w.totmammo < 60) {
       w.totmammo += 30;
       a = false;
       if (w.totmammo > 60) {
@@ -107,7 +107,7 @@ class Pickup {
       }
       a = false;
     }
-    if (dist(p.location.x, p.location.y, px, py) < 30 && pi == true && w.totpammo < 30) {
+    if (dist(p.location.x, p.location.y, px, py) < 30 && pi && w.totpammo < 30) {
       w.totpammo += 15;
       pi = false;
       if (w.totpammo > 30) {
@@ -117,7 +117,7 @@ class Pickup {
     }
 
 
-    if (h == true) {
+    if (h) {
       pushMatrix();
       translate(hx, hy);
       rotate(hrot);
@@ -134,7 +134,7 @@ class Pickup {
       popMatrix();
     }
 
-    if (pi == true) {
+    if (pi) {
       pushMatrix();
       translate(px, py);
       rotate(prot);
@@ -181,7 +181,7 @@ class Pickup {
       popMatrix();
     }
 
-    if (a == true) {
+    if (a) {
 
       pushMatrix();
       translate(ax, ay);
